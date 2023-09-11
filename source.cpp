@@ -15,16 +15,20 @@ public:
 
         auto& Row = weights.front();
         const auto& Paths = grid.front();
-        
+        auto prev = weights[0].front();        
         for (SizeType i = 1u; i < minimal; ++i)
         {
             Row[i] = Paths[i] + Row[i - 1];
-            weights[i].front() = grid[i].front() + weights[i - 1].front();
+            prev = weights[i].front() = grid[i].front() + prev;
         }
 
         if (maximal == height)
+        {
+            auto prev = weights[minimal - 1].front();
             for (SizeType i = minimal; i < maximal; ++i)
-                weights[i].front() = grid[i].front() + weights[i - 1].front();
+                prev = weights[i].front() = grid[i].front() + prev;
+        }
+            
         else
             for (SizeType i = minimal; i < maximal; ++i)
                 Row[i] = Paths[i] + Row[i - 1];
