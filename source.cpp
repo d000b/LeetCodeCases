@@ -46,15 +46,13 @@ class Solution {
 
         if (maximal == height)
         {
-            auto prev = weights[minimal - 1].front();
             for (SizeType i = minimal; i < maximal; ++i)
-                prev = weights[i].front() = grid[i].front() + prev;
+                ColumnPrev = weights[i].front() = grid[i].front() + ColumnPrev;
         }
         else
         {
-            auto prev = Row[minimal - 1];
             for (SizeType i = minimal; i < maximal; ++i)
-                prev = Row[i] = Paths[i] + prev;
+                RowPrev = Row[i] = Paths[i] + RowPrev;
         }
     }
 
