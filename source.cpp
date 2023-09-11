@@ -15,11 +15,12 @@ public:
 
         auto& Row = weights.front();
         const auto& Paths = grid.front();
-        auto prev = weights[0].front();        
+        auto RowPrev = Row[0];
+        auto ColumnPrev = weights[0].front();
         for (SizeType i = 1u; i < minimal; ++i)
         {
-            Row[i] = Paths[i] + Row[i - 1];
-            prev = weights[i].front() = grid[i].front() + prev;
+            RowPrev = Row[i] = Paths[i] + RowPrev;
+            ColumnPrev = weights[i].front() = grid[i].front() + ColumnPrev;
         }
 
         if (maximal == height)
@@ -28,19 +29,22 @@ public:
             for (SizeType i = minimal; i < maximal; ++i)
                 prev = weights[i].front() = grid[i].front() + prev;
         }
-            
         else
+        {
+            auto prev = Row[minimal - 1];
             for (SizeType i = minimal; i < maximal; ++i)
-                Row[i] = Paths[i] + Row[i - 1];
-
+                prev = Row[i] = Paths[i] + prev;
+        }
+            
         for (SizeType y = 1u; y < height; ++y)
         {
             auto& Row = weights[y];
             auto& TopRow = weights[y - 1];
             const auto& Paths = grid[y];
+            auto RowPrev = Row[0];
             for (SizeType x = 1u; x < width; ++x)
             {
-                Row[x] = Paths[x] + std::min(Row[x - 1], TopRow[x]);
+                RowPrev = Row[x] = Paths[x] + std::min(RowPrev, TopRow[x]);
             }
         }
 
