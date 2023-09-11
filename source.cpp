@@ -14,7 +14,7 @@ class Solution {
         }
         else
         {
-            return std::accumulate(grid.begin(), grid.end(), 0, [](int lhs, const std::vector<int> rhs)
+            return std::accumulate(grid.begin(), grid.end(), 0, [](int lhs, const std::vector<int>& rhs)
             {
                 return lhs + rhs.front();
             });
@@ -34,8 +34,8 @@ class Solution {
         const SizeType maximal = std::max(height, width);
 
         auto& Row = weights.front();
-        auto ColumnPrev = weights[0].front();
-        auto RowPrev = Row[0];
+        PathSizeType ColumnPrev, RowPrev;
+        RowPrev = ColumnPrev = Row.front();
 
         const auto& Paths = grid.front();
         for (SizeType i = 1u; i < minimal; ++i)
@@ -70,7 +70,8 @@ class Solution {
             auto& Row = weights[y];
             auto& TopRow = weights[y - 1];
             const auto& Paths = grid[y];
-            auto RowPrev = Row[0];
+            auto RowPrev = Row.front();
+
             for (SizeType x = 1u; x < width; ++x)
             {
                 RowPrev = Row[x] = Paths[x] + std::min(RowPrev, TopRow[x]);
@@ -89,7 +90,7 @@ class Solution {
         fill_path_sides(weights, height, width, grid);
         fill_path_matrix(weights, height, width, grid);
 
-        return weights[height - 1][width - 1];
+        return weights.back().back();
     }
 public:
     int minPathSum(std::vector<std::vector<int>>& grid) {
